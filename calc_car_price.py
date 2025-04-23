@@ -26,7 +26,7 @@ def get_mileage():
 		except:
 			print (f"{mil}: value must be an integer!")
 
-def estimate_price(thetas_dict, mileage):
+def calc_price(thetas_dict, mileage):
 	return (thetas_dict['theta_0'] + thetas_dict['theta_1'] * mileage)
 
 def main ():
@@ -40,7 +40,7 @@ def main ():
 	mileage = get_mileage()
 
 	# calculate price
-	price_estimate = estimate_price(thetas_dict, mileage)
+	price_estimate = calc_price(thetas_dict, mileage)
 	print (f'Your car is estimated at {price_estimate}')
 
 '''
