@@ -68,9 +68,36 @@ def update_thetas(thetas, data, iterations=1000, learning_rate=0.1):
 
 		theta_0 -= (learning_rate * error_sum_0) / len (data)
 		theta_1 -= (learning_rate * error_sum_1) / len (data)
-	return (theta_0, theta_1)
+	
+	yield theta_0, theta_1
 
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
+def animate(data, thetas, iterations=1000, learning_rate=.1):
+	fig, ax = plt.subplots()
+	x_vals = [d[0] for d in data]
+	y_vals = [d[1] for d in data]
+	y_predictions = [0 for x in x_vals]
+	scatter = ax.scatter(x_vals, y_vals, color='blue')
+	line, = ax.plot(x_vals, y_predictions, color='red', linewidth=2)
+
+	ax.set_xlim(0, 1)
+	ax.set_ylim(0, max(y_vals) * 1.1)
+	ax.set_xlabel("Normalized km")
+	ax.set_ylabel("Price")
+
+	theta_gen = update_thetas(thetas, data, iterations, learning_rate)
+
+	def update(frame):
+		theta_0, theta_1 = next(theta_gen)
+		print (theta_0, theta_1)
+		y_pred = [estimate_price(x, theta_0, theta_1) for x in x_vals]
+		line.set_data(x_vals, y_pred)
+		return line,
+
+	anim = FuncAnimation(fig, update, frames=iterations, interval=5, repeat=False)
+	plt.show()
 
 def main():
 	data = load_data()
@@ -79,14 +106,16 @@ def main():
 	data = ret[0]
 	max_km = ret[1]
 	
-	thetas = update_thetas(thetas, data)
+	animate(data, thetas)
+
+
+	# thetas = update_thetas(thetas, data)
 
 	# Denormalize theta_1
-	print (thetas)
-	thetas = (thetas[0], thetas[1] / max_km)
+	# thetas = (thetas[0], thetas[1] / max_km)
 
-	save_thetas_csv(thetas, max_km)
-	print (thetas)
+	# save_thetas_csv(thetas, max_km)
+	# print (thetas)
 
 
 '''

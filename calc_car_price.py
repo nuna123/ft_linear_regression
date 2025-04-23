@@ -26,18 +26,22 @@ def get_mileage():
 		except:
 			print (f"{mil}: value must be an integer!")
 
+
 def calc_price(thetas_dict, mileage):
 	return (thetas_dict['theta_0'] + thetas_dict['theta_1'] * mileage)
 
 def main ():
 	# read thetas values from thetas file
 	thetas_dict = read_thetas()
-	if thetas_dict == -1 or len(thetas_dict) != 2 or 'theta_0' not in thetas_dict or 'theta_1' not in thetas_dict:
+	if thetas_dict == -1 or 'theta_0' not in thetas_dict or 'theta_1' not in thetas_dict:
 		print("Something went wrong! thetas file is incorrect or missing values.")
 		return
 
 	# get user input for mileage
 	mileage = get_mileage()
+
+	#NORMALIZE DATA
+	# mileage /= thetas_dict["max_km"]
 
 	# calculate price
 	price_estimate = calc_price(thetas_dict, mileage)
