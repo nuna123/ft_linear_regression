@@ -31,7 +31,6 @@ def load_data(filename = DATA_FILE):
 		return -1
 
 def save_thetas_csv(thetas, max_km, filename=THETAS_FILE):
-	print ("SAVE THETAS")
 	with open(filename, 'w', newline='') as file:
 		writer = csv.writer(file)
 		writer.writerow(['var', 'value'])
@@ -131,7 +130,7 @@ def main():
 
 
 
-	print ("HERE")
+	
 	# Denormalize theta_1, to be able to use it in predictions
 	thetas = (thetas[0], thetas[1] / max_km)
 
